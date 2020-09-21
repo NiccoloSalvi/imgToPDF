@@ -3,7 +3,7 @@ from PIL import Image
 import os
 
 mergedObject = PdfFileMerger()
-nomeFile = "Salvi" # nome del file merged
+nomeFile = "pdfMerged" # nome del file merged
 path = os.getcwd()
 okFiles = [] # lista di file convertibili
 extensions = ["jpg", "jpeg", "png"] # lista di estensioni accettabili
