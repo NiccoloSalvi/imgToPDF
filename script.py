@@ -1,3 +1,5 @@
+# all the images must be saved in the directory <img>
+
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from PIL import Image
 import os
