@@ -1,38 +1,41 @@
-# all the images must be saved in the directory <img>
-
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from PIL import Image
 import os
 
 mergedObject = PdfFileMerger()
-nomeFile = "pdfMerged" # nome del file merged
 path = os.getcwd()
-okFiles = [] # lista di file convertibili
-extensions = ["jpg", "jpeg", "png"] # lista di estensioni accettabili
+okFiles = []
+extensions = ["jpg", "jpeg", "png"]
 
-# rimuove gli altri i pdf delle singole pagine
 def removePDFs():
     for f in os.listdir(path):
-        if '.' in f: # se si tratta di un file e non di una cartella
+        if '.' in f:
             ex = f.split('.')
-            if ex[1] == "pdf": # se l'estensione del file è accettabile
+            if ex[1] == "pdf":
                 os.remove(f)
+
+def removeImgs():
+    for f in os.listdir(path + "/img/"):
+        if '.' in f:
+            os.remove(path + "/img/" + f)
 
 def JPGtoPDF(okFiles):
     for f in okFiles:
-        img = Image.open(path + "/img/" + f) # apertura immagine
-        onlyFile = f.split('.') # nome del file
-        imgConverted = img.convert('RGB') # conversione a colori
-        imgConverted.save(onlyFile[0] + ".pdf") # nuova estensione del file
+        img = Image.open(path + "/img/" + f)
+        onlyFile = f.split('.')
+        imgConverted = img.convert('RGB')
+        imgConverted.save(onlyFile[0] + ".pdf")
         mergedObject.append(PdfFileReader(onlyFile[0] + ".pdf", 'rb'))
     removePDFs()
-    mergedObject.write(nomeFile + ".pdf") # creazione file merged
-    os.startfile(nomeFile + ".pdf") # apre direttamente il file pdf
+    removeImgs()
+    mergedObject.write(nomeFile + ".pdf")
+    os.startfile(nomeFile + ".pdf")
     
-for f in os.listdir(path + "/img/"): # le immagini vengono salvate nella cartella img
-    if '.' in f: # se si tratta di un file e non di una cartella
+for f in os.listdir(path + "/img/"):
+    if '.' in f:
         ex = f.split('.')
-        if ex[1] in extensions: # se l'estensione del file è accettabile
-            okFiles.append(f) # aggiungi il file alla lista dei file accettabili
+        if ex[1] in extensions:
+            okFiles.append(f)
 
-JPGtoPDF(okFiles) # traforma file in PDF
+nomeFile = input('File name: ')
+JPGtoPDF(okFiles)
